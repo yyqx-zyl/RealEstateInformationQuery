@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.EstateDao">
+	<select id="getEstateList" resultMap="elist">
+		SELECT u.name,e.* FROM real_estate e 
+			INNER JOIN users u ON(e.cardId=u.cardId)
+			<where>
+				<if test="type==0">
+					and 1=1
+				</if>
+				<if test="type==2">
+					and e.cardId=#{text}
+				</if>
+				<if test="type==1">
+					and u.name=#{text}
+				</if>
+			</where>
+			limit #{start},#{pageSize}
+	</select>
+	<resultMap type="Estate" id="elist" autoMapping="true">
+		<association property="users" column="users" autoMapping="true"></association>
+	</resultMap>
+	
+	<!-- 数据总条数 -->
+	<select id="getCount" resultType="Integer">
+		select count(1) from real_estate
+	</select>
+</mapper>

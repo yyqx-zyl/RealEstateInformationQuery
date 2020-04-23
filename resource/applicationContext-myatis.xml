@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd"> 
+        
+        <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+      	<!--配置驱动名称  -->
+      		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+      		<property name="url" value="jdbc:mysql://localhost:3306/realest?characterEncoding=UTF-8&amp;useUnicode=true"/>
+     		<property name="username" value="root"/>
+			<property name="password" value="1234"/>
+       </bean>
+        <!-- 配置sqlSessionFactory -->
+         <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        	<!-- 配置数据源 -->
+        	<property name="dataSource" ref="dataSource"></property>
+        	<!-- 配置实体类包的扫描 -->
+        	<property name="typeAliasesPackage" value="com.pojo"></property>
+        	
+        	<!-- 配置Mapperxml文件 -->
+        	<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        </bean>
+        <!--  -->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<!--扫描所有的dao  -->
+        	<property name="basePackage" value="com.dao"></property>
+        	<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+        </bean>
+        <!-- 业务类中有注解的类 -->
+        <context:component-scan base-package="com.service"></context:component-scan>
+</beans>

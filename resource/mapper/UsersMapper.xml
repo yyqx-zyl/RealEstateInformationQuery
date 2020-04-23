@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UsersDao">
+	<!-- 登录 -->
+	<select id="login" resultMap="ulist" parameterType="Users">
+		SELECT * FROM `users`  WHERE `cardId`=#{cardId} AND `password`=#{password}
+	</select>
+	<resultMap type="Users" id="ulist" autoMapping="true"></resultMap>
+	
+	<insert id="save">
+		insert into users (cardId,name,gender,password,createTime,status)
+			values(#{cardId},#{name},#{gender},#{password},#{createTime},#{status})
+	</insert>
+</mapper>
